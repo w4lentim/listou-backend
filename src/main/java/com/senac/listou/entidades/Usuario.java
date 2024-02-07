@@ -1,5 +1,7 @@
 package com.senac.listou.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.senac.listou.enums.TipoCargo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,11 +9,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity(name = "usuarios")
-public class UsuarioEntity implements UserDetails {
+public class Usuario implements UserDetails {
 
     @Id
     @Column(name = "id_usuario")
@@ -31,9 +34,14 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "status")
     private Boolean status;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo")
+    private Cargo cargo;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Set.of(cargo);
     }
 
     @Override
@@ -48,21 +56,21 @@ public class UsuarioEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
