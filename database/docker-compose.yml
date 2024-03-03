@@ -1,0 +1,11 @@
+# Criar container contendo banco de dados PostgreSQL
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=listoupi
+      - POSTGRES_PASSWORD=listoupi
+    ports:
+      - 5432:5432
